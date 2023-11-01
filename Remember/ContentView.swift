@@ -10,8 +10,10 @@ import SwiftUI //we dont always import swiftui like when working on backend,
 //structs are the heart of swiftUI, they can have vars and funcs, NOT A CLASS THO so no inhereitance and stuff.
 struct ContentView: View { //:View means like it behaves like a view.
     
+    
 //    var i: Int // but : Int is of type
 //    var s: String
+    
     
     var body: some View {
         
