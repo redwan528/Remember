@@ -10,27 +10,66 @@ import SwiftUI //we dont always import swiftui like when working on backend,
 //structs are the heart of swiftUI, they can have vars and funcs, NOT A CLASS THO so no inhereitance and stuff.
 struct ContentView: View { //:View means like it behaves like a view.
     
-    let emojis = ["😈","👻","💀","🎃","👿","☠️"]
+    let emojis = ["😈","👻","💀","🎃","👿","☠️", "🧙", "🍫","🍬","🙀","🕸", "🕷", "🍭"]
 
-    @State var cardsOnScreen: Int = 6
+    @State var cardsOnScreen: Int = 4
+    
     
     var body: some View {
         VStack{
-            HStack{
-                ForEach(0..<cardsOnScreen, id: \.self){index in
-                    CardView(content: emojis[index])
-                }
-                
-                
-                
+            ScrollView{
+              cards
             }
+            
+            Spacer()
+          cardCountAdjusters
         }
-       
-        .foregroundColor(.orange)
+    
         .padding()
 
     }
+    
+    var cards: some View {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]){
+            ForEach(0..<cardsOnScreen, id: \.self){index in
+                CardView(content: emojis[index])
+                    .aspectRatio(2/3,contentMode: .fit)
+            }
+        } .foregroundColor(.orange)
+    }
+    
+    var cardCountAdjusters: some View {
+        HStack{
+            
+        cardRemover
+            
+            Spacer()
+           
+           cardAdder
+            
+        }.imageScale(.medium)
+            .font(.largeTitle)
+    }
+    
+    func cardCountAdjuster(by offset: Int, symbol: String) -> some View{
+        Button(action:{
+                cardsOnScreen += offset
+            
+        }, label: {
+                Image(systemName: symbol)
+        })
+        .disabled(cardsOnScreen + offset < 1 || cardsOnScreen + offset > emojis.count)
+    }
+    
+    var cardRemover: some View {
+         cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
+    }
+    
+    var cardAdder: some View {
+        cardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus.fill")
+    }
 }
+
 
 struct CardView: View {
 //if u have a var in any struct, that has no value, thats not allowed. therefore u need default values for vars in struct
@@ -40,16 +79,16 @@ struct CardView: View {
     var body: some View { //views r read only, therefore mostly we always use let
         ZStack /*(alignment: .center, content:*/ {
             let base = RoundedRectangle(cornerRadius: 12)
-            if isFaceUp {
+            Group {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
                 Text(content).font(.largeTitle)
-            } else {
-                base.fill()
             }
+            .opacity(isFaceUp ? 1 : 0)
+            base.fill().opacity(isFaceUp ? 0 : 1)
             
         }.onTapGesture {
-            print("tapped")
+            isFaceUp.toggle()
         }
     }
 }
