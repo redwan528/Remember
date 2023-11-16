@@ -16,7 +16,7 @@ struct EmojiCard: Identifiable {
 }
 struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
     
-    //var viewModel: EmojiMemoryGame // our butler fyi u never call a var a viewmodel
+    @ObservedObject var viewModel: EmojiMemoryGame // our butler fyi u never call a var a viewmodel
     
     
     @State private var halloweenEmojis:[EmojiCard] =
@@ -80,6 +80,10 @@ struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
                 Text("Memorize!").font(.largeTitle)
                 themeCards
             }
+        
+        Button("Shuffle") {
+            viewModel.shuffle()
+        }
             
             Spacer()
             //cardCountAdjusters
@@ -102,13 +106,14 @@ struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
         
         }
     }
-    
+
     
     func cardGrid(for emojiCards: [EmojiCard], color: Color) -> some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]){
-            ForEach(emojiCards[0..<cardsOnScreen]) { emojiCard in
-                CardView(content: emojiCard.emoji)
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0){
+            ForEach(viewModel.cards.indices, id: \.self) { index in
+                CardView(viewModel.cards[index])
                     .aspectRatio(2/3, contentMode: .fit)
+                    .padding(4)
             }
         }
         .foregroundColor(color)
@@ -167,30 +172,35 @@ struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
     
     
     
-    struct CardView: View {
-        //if u have a var in any struct, that has no value, thats not allowed. therefore u need default values for vars in struct
-        let content: String
-        @State var isFaceUp = false
-        
-        var body: some View { //views r read only, therefore mostly we always use let
-            ZStack /*(alignment: .center, content:*/ {
-                let base = RoundedRectangle(cornerRadius: 12)
-                Group {
-                    base.fill(.white)
-                    base.strokeBorder(lineWidth: 2)
-                    Text(content).font(.largeTitle)
-                }
-                .opacity(isFaceUp ? 1 : 0)
-                base.fill().opacity(isFaceUp ? 0 : 1)
-                
-            }.onTapGesture {
-                isFaceUp.toggle()
+struct CardView: View {
+    
+    let card: MemoryGame<String>.Card
+    
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
+    }
+    
+    var body: some View { //views r read only, therefore mostly we always use let
+        ZStack /*(alignment: .center, content:*/ {
+            let base = RoundedRectangle(cornerRadius: 12)
+            Group {
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 2)
+                Text(card.content).font(.system(size: 120)).minimumScaleFactor(0.01)
+                    .aspectRatio(1, contentMode: .fit)
             }
+            .opacity(card.isFaceUp ? 1 : 0)
+            base.fill().opacity(card.isFaceUp ? 0 : 1)
+            
+            //                        }.onTapGesture {
+            //                            card.isFaceUp.toggle()
+            //                        }
         }
     }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        EmojiMemoryGameView()
+    
+    struct EmojiMemoryGameView_Previews: PreviewProvider {
+        static var previews: some View {
+            EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        }
     }
 }
