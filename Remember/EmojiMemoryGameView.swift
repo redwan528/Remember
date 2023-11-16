@@ -5,7 +5,7 @@
 //  Created by Redwan Khan on 29/10/2023.
 //
 
-import SwiftUI 
+import SwiftUI
 
 enum CardTheme {
     case halloween, face, food
@@ -14,7 +14,10 @@ struct EmojiCard: Identifiable {
     let id = UUID() // this provides a unqiue identifier
     let emoji: String
 }
-struct ContentView: View { //:View means like it behaves like a view.
+struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
+    
+    //var viewModel: EmojiMemoryGame // our butler fyi u never call a var a viewmodel
+    
     
     @State private var halloweenEmojis:[EmojiCard] =
         Array(repeating: ["😈","👻","💀","🎃","👿","☠️", "🧙", "🍫","🍬","🙀","🕸", "🕷", "🍭"], count: 2)
@@ -29,7 +32,7 @@ struct ContentView: View { //:View means like it behaves like a view.
         .shuffled()
     
     @State private var foodEmojis:[EmojiCard] =
-        Array(repeating: ["🍔","🌭","🍕","🍤","🍗","🍿", "🥪","🥓","🥞"], count: 2)
+        Array(repeating: ["🍔","🌭","🍕","🍤","🍗","🍿", "🥪","🥓","🥞","🍟"], count: 2)
         .joined()
         .map{EmojiCard(emoji: $0)}
         .shuffled()
@@ -72,7 +75,7 @@ struct ContentView: View { //:View means like it behaves like a view.
     
     
     var body: some View {
-        VStack{
+        //VStack{
             ScrollView{
                 Text("Memorize!").font(.largeTitle)
                 themeCards
@@ -81,7 +84,7 @@ struct ContentView: View { //:View means like it behaves like a view.
             Spacer()
             //cardCountAdjusters
             themeChooser
-        }
+        //}
         
         .padding()
         
@@ -115,15 +118,15 @@ struct ContentView: View { //:View means like it behaves like a view.
     var themeChooser: some View {
         VStack{
             Text("Themes").font(.caption)
-            
             HStack{
                 VStack{
-                    Button("🎃"){
+                    Button ("🕷") {
                         changeTheme(to: .halloween)
                     }.font(.largeTitle)
                     
                     Text("Halloween").font(.caption)
                 }
+                Spacer()
                 
                 VStack{
                     Button("😊"){
@@ -132,6 +135,8 @@ struct ContentView: View { //:View means like it behaves like a view.
                     
                     Text("Faces").font(.caption)
                 }
+                
+                Spacer()
                 
                 VStack{
                     Button("🍔"){
@@ -145,43 +150,6 @@ struct ContentView: View { //:View means like it behaves like a view.
         }
     }
     
-    
-//    var cardCountAdjusters: some View {
-//        HStack{
-//            cardRemover
-//            Spacer()
-//            cardAdder
-//        }.imageScale(.medium)
-//            .font(.largeTitle)
-//    }
-    
-//    var cardRemover: some View {
-//        cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
-//    }
-//
-//    var cardAdder: some View {
-//        cardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus.fill")
-//    }
-    
-    
-//    func cardCountAdjuster(by offset: Int, symbol: String) -> some View{
-//        Button(action:{
-//            if offset > 0 {
-//                let themeCount =  themeEmojiCount()
-//                if cardsOnScreen < themeCount{
-//                    cardsOnScreen += offset
-//                }
-//            } else {
-//                cardsOnScreen += offset
-//
-//            }
-//
-//
-//        }, label: {
-//            Image(systemName: symbol)
-//        })
-//        .disabled(cardsOnScreen + offset < 1 || cardsOnScreen + offset > themeEmojiCount())
-//    }
     
     func themeEmojiCount() -> Int {
         switch currentTheme {
@@ -202,7 +170,7 @@ struct ContentView: View { //:View means like it behaves like a view.
     struct CardView: View {
         //if u have a var in any struct, that has no value, thats not allowed. therefore u need default values for vars in struct
         let content: String
-        @State var isFaceUp = true
+        @State var isFaceUp = false
         
         var body: some View { //views r read only, therefore mostly we always use let
             ZStack /*(alignment: .center, content:*/ {
@@ -223,6 +191,6 @@ struct ContentView: View { //:View means like it behaves like a view.
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        EmojiMemoryGameView()
     }
 }
