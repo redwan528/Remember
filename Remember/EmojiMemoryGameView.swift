@@ -79,6 +79,8 @@ struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
             ScrollView{
                 Text("Memorize!").font(.largeTitle)
                 themeCards
+                    .animation(.default, value: viewModel.cards)
+
             }
         
         Button("Shuffle") {
@@ -110,10 +112,13 @@ struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
     
     func cardGrid(for emojiCards: [EmojiCard], color: Color) -> some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0){
-            ForEach(viewModel.cards.indices, id: \.self) { index in
-                CardView(viewModel.cards[index])
+            ForEach(viewModel.cards) { card in
+                CardView(card)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }
         .foregroundColor(color)
@@ -198,6 +203,8 @@ struct CardView: View {
         }
     }
     
+    
+    //preview gets recreated every time we change our code
     struct EmojiMemoryGameView_Previews: PreviewProvider {
         static var previews: some View {
             EmojiMemoryGameView(viewModel: EmojiMemoryGame())
