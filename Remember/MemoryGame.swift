@@ -18,9 +18,6 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
         //cards = Array<Card>()
         cards = []
         // add a numberOfPairsOfCards x 2 cards
-        
-        
-    //
         for pairIndex in 0..<max(2,numberOfPairsOfCards) {
             let content:CardContent = cardContentFactory(pairIndex)
             
@@ -30,20 +27,84 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
         }
     }
     
-    mutating func choose(_ card: Card){
-       // print("chose \(card)")
-        let chosenIndex = index(of: card)
-        cards[chosenIndex].isFaceUp.toggle()
-    }
+   // var indexOfTheOneAndOnlyFaceUpCard: Int? {
+//        get {
+//            var faceUpCardIndicies = [Int]()
+//            for index in cards.indices {
+//                if cards[index].isFaceUp {
+//                    faceUpCardIndicies.append(index)
+//                }
+//            }
+//            if faceUpCardIndicies.count == 1 {
+//                return faceUpCardIndicies.first
+//            } else {
+//                return nil
+//            }
+//        } set {
+//            for index in cards.indices {
+//                if index == newValue {
+//                    cards[index].isFaceUp = true
+//                    
+//                } else{
+//                    cards[index].isFaceUp = false
+//                }
+//            }
+//        }
+        //look how much code the get and set is, this is because we did not use functional programming here, we just used brute force using for loops and if statements. Let's rewrite the get set code using functinoal programming below:
+        
+        //FIXME: fix me later
+//        get {
+//            var faceUpCardIndicies = cards.indices.filter 
+//            {
+//                index in cards[index].isFaceUp
+//                
+//            }
+//        } set{
+//            
+//        }
+        
+        
+    //}
     
-    func index(of card: Card) -> Int {
-        for index in cards.indices {
-            if cards[index].id == card.id {
-                return index
+    mutating func choose(_ card: Card){
+        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id}) {
+            if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
+                if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+                    if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                        cards[chosenIndex].isMatched = true
+                        cards[potentialMatchIndex].isMatched = true
+                    }
+                    //the two commented out code below is not needed because of the get and set of the indexOfTheOneAndOnlyFaceUpCard var
+                    
+                   // indexOfTheOneAndOnlyFaceUpCard = nil
+                }
+                else {
+//                        for index in cards.indices {
+//                            cards[index].isFaceUp = false
+//                        }
+                        indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+                    }
+                    cards[chosenIndex].isFaceUp = true
+                    
+                
+                
             }
+            
+//cards[chosenIndex].isFaceUp.toggle()
+}
         }
-        return 0 // FIXME: bogus!!!
-    }
+                                               
+    
+    
+    //below code is not needed because functions as arguments above
+//    private func index(of card: Card) -> Int? {
+//        for index in cards.indices {
+//            if cads[index].id == card.id {
+//                return index
+//            }
+//        }
+//        return nil
+//    }
     
     mutating func shuffle(){
         cards.shuffle()
@@ -60,7 +121,7 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
 //            lhs.content == rhs.content
 //        }
         
-        var isFaceUp = true
+        var isFaceUp = false
         var isMatched = false
         let content: CardContent //let cuz content stays same on card no matter what
         

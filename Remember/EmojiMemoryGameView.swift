@@ -195,13 +195,14 @@ struct CardView: View {
                     .aspectRatio(1, contentMode: .fit)
             }
             .opacity(card.isFaceUp ? 1 : 0)
-            base.fill().opacity(card.isFaceUp ? 0 : 1)
-            
-            //                        }.onTapGesture {
-            //                            card.isFaceUp.toggle()
-            //                        }
+            base.fill()
+                .opacity(card.isFaceUp ? 0 : 1)
+              
         }
+        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+        
     }
+}
     
     
     //preview gets recreated every time we change our code
@@ -210,4 +211,4 @@ struct CardView: View {
             EmojiMemoryGameView(viewModel: EmojiMemoryGame())
         }
     }
-}
+
