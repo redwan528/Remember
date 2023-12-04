@@ -108,6 +108,7 @@ struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
         
         }
     }
+    
 
     
     func cardGrid(for emojiCards: [EmojiCard], color: Color) -> some View {

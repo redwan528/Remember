@@ -25,6 +25,7 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
             cards.append(Card(content: content, id:"\(pairIndex+1)a"))
             cards.append(Card(content: content, id: "\(pairIndex+1)b"))
         }
+        shuffle()
     }
     
    // var indexOfTheOneAndOnlyFaceUpCard: Int? {
@@ -52,19 +53,17 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
 //        }
         //look how much code the get and set is, this is because we did not use functional programming here, we just used brute force using for loops and if statements. Let's rewrite the get set code using functinoal programming below:
         
-        //FIXME: fix me later
-//        get {
-//            var faceUpCardIndicies = cards.indices.filter 
-//            {
-//                index in cards[index].isFaceUp
-//                
-//            }
-//        } set{
-//            
-//        }
-        
-        
-    //}
+
+    
+    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+        get {
+           /* let faceUpCardIndicies =*/ cards.indices.filter{ index in cards[index].isFaceUp }.only
+            //return faceUpCardIndicies.count == 1 ? faceUpCardIndicies.first : nil
+        } set{
+            cards.indices.forEach{ cards[$0].isFaceUp = (newValue == $0)}
+        }
+       
+    }
     
     mutating func choose(_ card: Card){
         if let chosenIndex = cards.firstIndex(where: {$0.id == card.id}) {
@@ -132,9 +131,12 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
             return "\(id): \(content) \(isFaceUp ? "up" : "down")\(isMatched ? "matched" : "")"
         }
     }
-    
-     
-    
-    
-    
+  
+}
+
+extension Array {
+    var only: Element? {
+        //Element? is the dont care for Array
+         count == 1 ? first : nil //if count ==1 then first otherwise nil
+    }
 }
