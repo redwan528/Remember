@@ -10,111 +10,32 @@ import SwiftUI
 enum CardTheme {
     case halloween, face, food
 }
-struct EmojiCard: Identifiable {
-    let id = UUID() // this provides a unqiue identifier
-    let emoji: String
-}
-struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
-    
-    @ObservedObject var viewModel: EmojiMemoryGame // our butler fyi u never call a var a viewmodel
-    
-    
-    @State private var halloweenEmojis:[EmojiCard] =
-        Array(repeating: ["😈","👻","💀","🎃","👿","☠️", "🧙", "🍫","🍬","🙀","🕸", "🕷", "🍭"], count: 2)
-        .joined()
-        .map{ EmojiCard(emoji: $0)}
-        .shuffled()
-    
-    @State private var faceEmojis:[EmojiCard] =
-        Array(repeating: ["😂","😘","🥰","😇","😎","🤯","🤬","🤪","🙄","🥵"], count: 2)
-        .joined()
-        .map{EmojiCard(emoji: $0)}
-        .shuffled()
-    
-    @State private var foodEmojis:[EmojiCard] =
-        Array(repeating: ["🍔","🌭","🍕","🍤","🍗","🍿", "🥪","🥓","🥞","🍟"], count: 2)
-        .joined()
-        .map{EmojiCard(emoji: $0)}
-        .shuffled()
-    
-    
-    @State private var currentTheme: CardTheme = .face
-     var cardsOnScreen: Int {
-        switch currentTheme{
-        case .halloween:
-            return halloweenEmojis.count
-            
-        
-        case .face:
-            return faceEmojis.count
-        case .food:
-            return foodEmojis.count
-        }
-    }
-    
-    
-    func changeTheme(to theme: CardTheme){
-        withAnimation{
-            currentTheme = theme
-            //suffle the emojis for the new theme
-            
-            switch theme {
-            case .halloween:
-                halloweenEmojis.shuffle()
-                //cardsOnScreen = min(cardsOnScreen, halloweenEmojis.count)
-            case .face:
-                faceEmojis.shuffle()
-                //cardsOnScreen = min(cardsOnScreen, faceEmojis.count)
-            case .food:
-                foodEmojis.shuffle()
-               // cardsOnScreen = min(cardsOnScreen, foodEmojis.count)
-            }
-        }
-    }
-    
-    
-    
+
+
+struct EmojiMemoryGameView: View {
+    @ObservedObject var viewModel: EmojiMemoryGame
+
     var body: some View {
-        //VStack{
-            ScrollView{
+        VStack {
+            ScrollView {
                 Text("Memorize!").font(.largeTitle)
                 themeCards
-                    .animation(.default, value: viewModel.cards)
-
             }
-        
-        Button("Shuffle") {
-            viewModel.shuffle()
-        }
-            
-            Spacer()
-            //cardCountAdjusters
-            themeChooser
-        //}
-        
-        .padding()
-        
-    }
-    
-    
-    var themeCards: some View {
-        switch currentTheme {
-        case .halloween:
-            return AnyView(cardGrid(for: halloweenEmojis, color: .orange))
-        case .face:
-            return AnyView(cardGrid(for: faceEmojis, color: .yellow))
-        case .food:
-            return AnyView(cardGrid(for: foodEmojis, color: .red))
-        
-        }
-    }
-    
+            .animation(.default, value: viewModel.cards)
 
-    
-    func cardGrid(for emojiCards: [EmojiCard], color: Color) -> some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0){
+            Button("Shuffle") {
+                viewModel.shuffle()
+            }
+            Spacer()
+            themeChooser
+        }
+        .padding()
+    }
+
+    var themeCards: some View {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) {
             ForEach(viewModel.cards) { card in
-                CardView(card)
+                CardView(card: card)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
@@ -122,72 +43,56 @@ struct EmojiMemoryGameView: View { //:View means like it behaves like a view.
                     }
             }
         }
-        .foregroundColor(color)
+        .foregroundColor(viewModel.themeColor)
     }
     
-    
     var themeChooser: some View {
-        VStack{
-            Text("Themes").font(.caption)
-            HStack{
-                VStack{
-                    Button ("🕷") {
-                        changeTheme(to: .halloween)
-                    }.font(.largeTitle)
-                    
-                    Text("Halloween").font(.caption)
-                }
+        VStack {
+            Text("Themes")
+            HStack {
+                ThemeButton(emoji: "🕷", theme: .halloween)
                 Spacer()
-                
-                VStack{
-                    Button("😊"){
-                        changeTheme(to: .face)
-                    }.font(.largeTitle)
-                    
-                    Text("Faces").font(.caption)
-                }
-                
+                ThemeButton(emoji: "😊", theme: .face)
                 Spacer()
-                
-                VStack{
-                    Button("🍔"){
-                        changeTheme(to: .food)
-                    }.font(.largeTitle)
-                    Text("Food").font(.caption)
-                }
-              
-             
+                ThemeButton(emoji: "🍔", theme: .food)
             }
         }
     }
-    
-    
-    func themeEmojiCount() -> Int {
-        switch currentTheme {
-        case .halloween:
-            return halloweenEmojis.count
-        case .face:
-            return faceEmojis.count
-        case .food:
-            return foodEmojis.count
+
+    func ThemeButton(emoji: String, theme: CardTheme) -> some View {
+        VStack {
+            Button {
+                changeTheme(to: theme)
+            } label: {
+                Text(emoji).font(.largeTitle)
+                    
+            }
         }
     }
-    
-    
-}
-    
-    
-    
-struct CardView: View {
-    
-    let card: MemoryGame<String>.Card
-    
-    init(_ card: MemoryGame<String>.Card) {
-        self.card = card
+
+    func changeTheme(to theme: CardTheme) {
+        withAnimation {
+            viewModel.newGame(theme: theme)
+        }
     }
-    
-    var body: some View { //views r read only, therefore mostly we always use let
-        ZStack /*(alignment: .center, content:*/ {
+
+    func themeDescription(theme: CardTheme) -> String {
+        switch theme {
+        case .halloween:
+            return "Halloween"
+        case .face:
+            return "Faces"
+        case .food:
+            return "Food"
+        }
+    }
+}
+
+struct CardView: View {
+    let card: MemoryGame<String>.Card
+
+    var body: some View {
+        ZStack {
             let base = RoundedRectangle(cornerRadius: 12)
             Group {
                 base.fill(.white)
@@ -198,18 +103,14 @@ struct CardView: View {
             .opacity(card.isFaceUp ? 1 : 0)
             base.fill()
                 .opacity(card.isFaceUp ? 0 : 1)
-              
         }
         .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
-        
     }
 }
-    
-    
-    //preview gets recreated every time we change our code
-    struct EmojiMemoryGameView_Previews: PreviewProvider {
-        static var previews: some View {
-            EmojiMemoryGameView(viewModel: EmojiMemoryGame())
-        }
-    }
 
+// Preview Provider
+struct EmojiMemoryGameView_Previews: PreviewProvider {
+    static var previews: some View {
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+    }
+}

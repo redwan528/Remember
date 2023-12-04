@@ -7,9 +7,9 @@
 
 import SwiftUI //viewmodel has to know what the UI looks like
 
-
 class EmojiMemoryGame: ObservableObject {
-    
+    //@Published private var model: MemoryGame<String>
+    private(set) var currentTheme: CardTheme = .face
     // static menas make emojis global but namespace it inside of my class.
     // private is only for us to use
     private static let halloweenEmojis = ["😈","👻","💀","🎃","👿","☠️", "🧙", "🍫","🍬","🙀","🕸", "🕷", "🍭"]
@@ -18,15 +18,16 @@ class EmojiMemoryGame: ObservableObject {
     
     private static func createMemoryGame() -> MemoryGame<String>{
         return MemoryGame(numberOfPairsOfCards: 16) { pairIndex in
-            if halloweenEmojis.indices.contains(pairIndex) {
-                return halloweenEmojis[pairIndex]
-            }
-            else if faceEmojis.indices.contains(pairIndex){
+//            if halloweenEmojis.indices.contains(pairIndex) {
+//                return halloweenEmojis[pairIndex]
+//            }
+//            else 
+            if faceEmojis.indices.contains(pairIndex){
                 return faceEmojis[pairIndex]
             }
-            else if foodEmojis.indices.contains(pairIndex){
-                return foodEmojis[pairIndex]
-            }
+//            else if foodEmojis.indices.contains(pairIndex){
+//                return foodEmojis[pairIndex]
+//            }
                 else{
                 return "oops"
             }
@@ -46,20 +47,46 @@ class EmojiMemoryGame: ObservableObject {
     //MARK: - Intents
     func shuffle() {
         model.shuffle() 
-        //objectWillChange.send()
     }
+
     
-    func newGame(with emojis: [String]){
-         model = MemoryGame<String>(numberOfPairsOfCards: emojis.count / 2){pairIndex in
-            emojis[pairIndex]
-        }
-        model.shuffle()
-    }
+    func newGame(theme: CardTheme) {
+          var emojis: [String]
+          switch theme {
+          case .halloween:
+              emojis = EmojiMemoryGame.halloweenEmojis
+              currentTheme = .halloween
+                 
+          case .face:
+              emojis = EmojiMemoryGame.faceEmojis
+              currentTheme = .face
+              
+          case .food:
+              emojis = EmojiMemoryGame.foodEmojis
+              currentTheme = .food
+          }
+          model = MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
+              emojis[pairIndex]
+          }
+          model.shuffle()
+      }
         
         func choose(_ card: MemoryGame<String>.Card){ //intent func //_ cuz its clearly
             model.choose(card)
         }
+    
+    
         
-        
+    var themeColor: Color {
+        switch currentTheme {
+        case .halloween:
+            return .orange
+        case .face:
+            return .yellow
+        case .food:
+            return .red
+        }
+    }
+
     }
 
