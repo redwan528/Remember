@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum CardTheme {
+enum CardTheme: CaseIterable {
     case halloween, face, food
 }
 
@@ -23,11 +23,14 @@ struct EmojiMemoryGameView: View {
             }
             .animation(.default, value: viewModel.cards)
 
-            Button("Shuffle") {
-                viewModel.shuffle()
+//            Button("Shuffle") {
+//                viewModel.shuffle()
+//            }
+            Button("New Game") {
+                viewModel.newGameWithRandomCyclingThemes()
             }
             Spacer()
-            themeChooser
+           // themeChooser
         }
         .padding()
     }
@@ -46,35 +49,41 @@ struct EmojiMemoryGameView: View {
         .foregroundColor(viewModel.themeColor)
     }
     
-    var themeChooser: some View {
-        VStack {
-            Text("Themes")
-            HStack {
-                ThemeButton(emoji: "🕷", theme: .halloween)
-                Spacer()
-                ThemeButton(emoji: "😊", theme: .face)
-                Spacer()
-                ThemeButton(emoji: "🍔", theme: .food)
-            }
-        }
-    }
+//    var themeChooser: some View {
+//        VStack {
+//            Text("Themes")
+//            HStack {
+//                ThemeButton(emoji: "🕷", theme: .halloween)
+//                Spacer()
+//                ThemeButton(emoji: "😊", theme: .face)
+//                Spacer()
+//                ThemeButton(emoji: "🍔", theme: .food)
+//            }
+//        }
+//    }
 
-    func ThemeButton(emoji: String, theme: CardTheme) -> some View {
-        VStack {
-            Button {
-                changeTheme(to: theme)
-            } label: {
-                Text(emoji).font(.largeTitle)
-                    
-            }
-        }
-    }
+//    func ThemeButton(emoji: String, theme: CardTheme) -> some View {
+//        VStack {
+//            Button {
+//                changeTheme(to: theme)
+//            } label: {
+//                Text(emoji).font(.largeTitle)
+//                    
+//            }
+//        }
+//    }
 
-    func changeTheme(to theme: CardTheme) {
-        withAnimation {
-            viewModel.newGame(theme: theme)
-        }
-    }
+//    func changeTheme(to theme: CardTheme) {
+//        withAnimation {
+//            viewModel.newGame(theme: theme)
+//        }
+//    }
+    
+//    func newGameWithRandomTheme(to theme: CardTheme){
+//        withAnimation{
+//            viewModel.newGame(theme: CardTheme.allCases.randomElement() ?? theme)
+//        }
+//    }
 
     func themeDescription(theme: CardTheme) -> String {
         switch theme {
