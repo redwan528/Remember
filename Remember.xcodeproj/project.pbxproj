@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C61A5C12B2E09BE00587001 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C61A5C02B2E09BE00587001 /* ThemeManager.swift */; };
 		5C9DA3912AFE394A006DC066 /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9DA3902AFE394A006DC066 /* EmojiMemoryGame.swift */; };
 		5C9E607B2AEE10CB0038D0C9 /* RememberApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9E607A2AEE10CB0038D0C9 /* RememberApp.swift */; };
 		5C9E607D2AEE10CB0038D0C9 /* EmojiMemoryGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C9E607C2AEE10CB0038D0C9 /* EmojiMemoryGameView.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5C61A5C02B2E09BE00587001 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		5C9DA3902AFE394A006DC066 /* EmojiMemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGame.swift; sourceTree = "<group>"; };
 		5C9E60772AEE10CB0038D0C9 /* Remember.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remember.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C9E607A2AEE10CB0038D0C9 /* RememberApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RememberApp.swift; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 				5C9E607C2AEE10CB0038D0C9 /* EmojiMemoryGameView.swift */,
 				5CB1E5462AFE29AF0062A746 /* MemoryGame.swift */,
 				5C9DA3902AFE394A006DC066 /* EmojiMemoryGame.swift */,
+				5C61A5C02B2E09BE00587001 /* ThemeManager.swift */,
 				5C9E607E2AEE10D00038D0C9 /* Assets.xcassets */,
 				5C9E60802AEE10D00038D0C9 /* Preview Content */,
 			);
@@ -145,6 +148,7 @@
 			files = (
 				5C9E607D2AEE10CB0038D0C9 /* EmojiMemoryGameView.swift in Sources */,
 				5C9E607B2AEE10CB0038D0C9 /* RememberApp.swift in Sources */,
+				5C61A5C12B2E09BE00587001 /* ThemeManager.swift in Sources */,
 				5CB1E5472AFE29AF0062A746 /* MemoryGame.swift in Sources */,
 				5C9DA3912AFE394A006DC066 /* EmojiMemoryGame.swift in Sources */,
 			);

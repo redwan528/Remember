@@ -27,7 +27,7 @@ struct EmojiMemoryGameView: View {
 //                viewModel.shuffle()
 //            }
             Button("New Game") {
-                viewModel.newGameWithRandomCyclingThemes()
+                viewModel.newGame()
             }
             Spacer()
            // themeChooser
@@ -49,41 +49,7 @@ struct EmojiMemoryGameView: View {
         .foregroundColor(viewModel.themeColor)
     }
     
-//    var themeChooser: some View {
-//        VStack {
-//            Text("Themes")
-//            HStack {
-//                ThemeButton(emoji: "🕷", theme: .halloween)
-//                Spacer()
-//                ThemeButton(emoji: "😊", theme: .face)
-//                Spacer()
-//                ThemeButton(emoji: "🍔", theme: .food)
-//            }
-//        }
-//    }
 
-//    func ThemeButton(emoji: String, theme: CardTheme) -> some View {
-//        VStack {
-//            Button {
-//                changeTheme(to: theme)
-//            } label: {
-//                Text(emoji).font(.largeTitle)
-//                    
-//            }
-//        }
-//    }
-
-//    func changeTheme(to theme: CardTheme) {
-//        withAnimation {
-//            viewModel.newGame(theme: theme)
-//        }
-//    }
-    
-//    func newGameWithRandomTheme(to theme: CardTheme){
-//        withAnimation{
-//            viewModel.newGame(theme: CardTheme.allCases.randomElement() ?? theme)
-//        }
-//    }
 
     func themeDescription(theme: CardTheme) -> String {
         switch theme {
