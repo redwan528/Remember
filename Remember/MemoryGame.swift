@@ -65,45 +65,71 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
        
     }
     
-    mutating func choose(_ card: Card){
-        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id}) {
-            if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
+    private(set) var score = 0
+    
+//    mutating func choose(_ card: Card){
+//        if let chosenIndex = cards.firstIndex(where: {$0.id == card.id}) {
+//            if !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
+//                if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
+//                    if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+//                        //match found
+//                        cards[chosenIndex].isMatched = true
+//                        cards[potentialMatchIndex].isMatched = true
+//                        score += 2
+//                    }
+//                    //the two commented out code below is not needed because of the get and set of the indexOfTheOneAndOnlyFaceUpCard var
+//                    
+//                   // indexOfTheOneAndOnlyFaceUpCard = nil
+//                    else {
+//                        //mismatch
+//                        if cards[chosenIndex].hasBeenSeen {score -= 1}
+//                        if cards[potentialMatchIndex].hasBeenSeen {score -= 1}
+//                    }
+//                    cards[chosenIndex].isFaceUp = true
+//                }
+//                
+//                else {
+////                        for index in cards.indices {
+////                            cards[index].isFaceUp = false
+////                        }
+//                    //mismatch
+//                    
+//                        indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+//                    }
+//                    cards[chosenIndex].hasBeenSeen = true
+//                    
+//                
+//                
+//            }
+//            
+//}
+//        }
+    
+    mutating func choose(_ card: Card) {
+            if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }),
+               !cards[chosenIndex].isFaceUp,
+               !cards[chosenIndex].isMatched {
+
                 if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
+                        // Match found
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
-                    }
-                    //the two commented out code below is not needed because of the get and set of the indexOfTheOneAndOnlyFaceUpCard var
-                    
-                   // indexOfTheOneAndOnlyFaceUpCard = nil
-                }
-                else {
-//                        for index in cards.indices {
-//                            cards[index].isFaceUp = false
-//                        }
-                        indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+                        score += 2
+                    } else {
+                        // Mismatch
+                        //if cards[chosenIndex].hasBeenSeen { score -= 1 }
+                        //if cards[potentialMatchIndex].hasBeenSeen { score -= 1 }
                     }
                     cards[chosenIndex].isFaceUp = true
-                    
-                
-                
+                } else {
+                    indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+                }
+                cards[chosenIndex].hasBeenSeen = true
             }
-            
-//cards[chosenIndex].isFaceUp.toggle()
-}
         }
                                                
-    
-    
-    //below code is not needed because functions as arguments above
-//    private func index(of card: Card) -> Int? {
-//        for index in cards.indices {
-//            if cads[index].id == card.id {
-//                return index
-//            }
-//        }
-//        return nil
-//    }
+
     
     mutating func shuffle(){
         cards.shuffle()
@@ -123,7 +149,7 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
         var isFaceUp = false
         var isMatched = false
         let content: CardContent //let cuz content stays same on card no matter what
-        
+        var hasBeenSeen = false
         
         var id: String //dont care as long as its hashable
         

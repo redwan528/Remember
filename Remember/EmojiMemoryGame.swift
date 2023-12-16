@@ -12,6 +12,14 @@ class EmojiMemoryGame: ObservableObject {
 
     private(set) var currentTheme: Theme
     
+    var themeName: String {
+        currentTheme.name
+    }
+    
+    var score: Int {
+        model.score
+    }
+    
     struct Theme {
         let name: String
         let emojis: [String]
