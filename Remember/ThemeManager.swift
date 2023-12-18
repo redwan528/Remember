@@ -11,29 +11,32 @@ class ThemeManager {
     static var shared = ThemeManager()
 
     private(set) var themes: [EmojiMemoryGame.Theme] = []
+    
+    var dessertsEmojis =  ["🍰", "🧁", "🍩", "🍪", "🍫", "🍬", "🍭", "🍮", "🍨", "🍧", "🍦", "🥧", "🍡", "🍢", "🍠"]
+    var halloweenEmojis = ["😈", "👻", "💀", "🎃", "👿", "☠️", "🧙", "🍫", "🍬", "🙀", "🕸", "🕷", "🍭", "🦇", "🪦", "🧛", "🧟‍♂️", "🧟‍♀️"] 
+        var faceEmojis = ["😂", "😘", "🥰", "😇", "😎", "🤯", "🤬", "🤪", "🙄", "🥵", "😏", "😒", "🤩", "😜", "😡", "😱"]
+    var mealEmojis = ["🥞", "🧇", "🍳", "🥓", "🥐", "🍔", "🍟", "🌭", "🍕", "🥪", "🍱", "🍲", "🥘", "🍝", "🥗"]
+    var animalEmojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🐵"]
+    var sportsEmojis = ["⚽", "🏀", "🏈", "⚾", "🎾", "🏐", "🏉", "🏏", "🏑", "🏒", "🏓", "🏸", "🥊", "🛹", "🏹"]
+    var travelEmojis = ["✈️", "🚂", "🚗", "🚢", "🛸", "🚀", "🚁", "🚲", "🏍", "🚜", "⛵", "🚇", "🛶", "🛴", "🚡"]
 
     private init() {
         // Initialize with default themes
-        themes.append(contentsOf: [
-            // Add your default themes here
-            EmojiMemoryGame.Theme(name: "Halloween", emojis: ["😈","👻","💀","🎃","👿","☠️", "🧙", "🍫","🍬","🙀","🕸", "🕷", "🍭"], numberOfPairs: 10, color: "Orange"),
+        themes = [
             
-           
-
-            EmojiMemoryGame.Theme(name: "Faces", emojis: ["😂","😘","🥰","😇","😎","🤯","🤬","🤪","🙄","🥵"], numberOfPairs: 10, color: "Yellow"),
-
+            createTheme(name: "Halloween", emojis: halloweenEmojis, color: "Orange"),
+                     createTheme(name: "Faces", emojis: faceEmojis, color: "Yellow"),
+                     createTheme(name: "Desserts", emojis: dessertsEmojis, color: "Pink"),
+                     createTheme(name: "Meals", emojis: mealEmojis, color: "Red"),
+                     createTheme(name: "Animals", emojis: animalEmojis, color: "Green"),
+                     createTheme(name: "Sports", emojis: sportsEmojis, color: "Blue"),
+                     createTheme(name: "Travel", emojis: travelEmojis, color: "Indigo")
             
-            EmojiMemoryGame.Theme(name: "Desserts", emojis: ["🍰", "🧁", "🍩", "🍪", "🍫", "🍬", "🍭", "🍮", "🍨", "🍧", "🍦", "🥧", "🍡", "🍢", "🍠"], numberOfPairs: 10, color: "Pink"),
-
-            EmojiMemoryGame.Theme(name: "Meals", emojis: ["🥞", "🧇", "🍳", "🥓", "🥐", "🍔", "🍟", "🌭", "🍕", "🥪", "🍱", "🍲", "🥘", "🍝", "🥗"], numberOfPairs: 10, color: "Red"),
-            
-            EmojiMemoryGame.Theme(name: "Animals", emojis: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🐵"], numberOfPairs: 10, color: "Green"),
-
-            EmojiMemoryGame.Theme(name: "Sports", emojis: ["⚽", "🏀", "🏈", "⚾", "🎾", "🏐", "🏉", "🏏", "🏑", "🏒", "🏓", "🏸", "🥊", "🛹", "🏹"], numberOfPairs: 10, color: "Blue"),
-
-            EmojiMemoryGame.Theme(name: "Travel", emojis: ["✈️", "🚂", "🚗", "🚢", "🛸", "🚀", "🚁", "🚲", "🏍", "🚜", "⛵", "🚇", "🛶", "🛴", "🚡"], numberOfPairs: 10, color: "Purple")
-            
-        ])
+        ]
+    }
+    
+    private func createTheme(name: String, emojis: [String], color: String) -> EmojiMemoryGame.Theme {
+        return EmojiMemoryGame.Theme(name: name, emojis: emojis, numberOfPairs: emojis.count, color: color)
     }
 
     func addTheme(_ theme: EmojiMemoryGame.Theme) {

@@ -7,12 +7,59 @@
 
 import SwiftUI
 
-struct AspectVGrid: View {
+struct AspectVGrid<Item: Identifiable, ItemView: View>: View //where Item: Identifiable (another way of writing the syntax
+// these items and their types are dont cares. it doesnt matter what the object is, all that matters is the type like Identifiable and View
+{
+    var items:[Item]
+    var aspectRatio: CGFloat = 1
+    var content: (Item) -> ItemView
+    
+    init(_ items: [Item], aspectRatio: CGFloat, @ViewBuilder content: @escaping (Item) -> ItemView) {
+        self.items = items
+        self.aspectRatio = aspectRatio
+        self.content = content
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        GeometryReader {geometry in //made it so that
+            let gridItemSize = griditemWidthThatFits(
+                count: items.count,
+                size: geometry.size,
+                atAspectRatio: aspectRatio)
+            
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)], spacing: 0) {
+                ForEach(items) { item in
+                    content(item)
+                        .aspectRatio(aspectRatio, contentMode: .fit)
+                }
+            }
+        }
+    }
+    
+    func griditemWidthThatFits(count: Int,
+                               size: CGSize,
+                               atAspectRatio aspectRatio: CGFloat
+    ) -> CGFloat {
+        let count = CGFloat(count)
+        var columnCount = 1.0
+        
+        repeat {
+            
+            let width = size.width / columnCount
+            let height = width / aspectRatio
+            
+            let rowCount = (count / columnCount).rounded(.up)
+            if rowCount * height < size.height {
+                return (size.width / columnCount).rounded(.down)
+            }
+            columnCount += 1
+            
+        } while columnCount < count
+        return min(size.width / count, size.height * aspectRatio).rounded(.down)
+        //return 85
     }
 }
 
-#Preview {
-    AspectVGrid()
-}
+//#Preview {
+//    AspectVGrid(items: items, content: content)
+//}

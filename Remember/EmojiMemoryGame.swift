@@ -90,6 +90,7 @@ class EmojiMemoryGame: ObservableObject {
         case "Blue": return .blue
         case "Green": return .green
         case "Pink": return .pink
+        case "Indigo": return .indigo
         default: return .gray
         }
     }

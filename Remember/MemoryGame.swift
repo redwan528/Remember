@@ -118,8 +118,9 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
                         score += 2
                     } else {
                         // Mismatch
-                        //if cards[chosenIndex].hasBeenSeen { score -= 1 }
-                        //if cards[potentialMatchIndex].hasBeenSeen { score -= 1 }
+                       // if cards[chosenIndex].hasBeenSeen { score -= 1 } dead code line
+                        
+                        if cards[potentialMatchIndex].hasBeenSeen { score -= 1 }
                     }
                     cards[chosenIndex].isFaceUp = true
                 } else {
