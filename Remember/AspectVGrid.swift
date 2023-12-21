@@ -36,28 +36,50 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View //where Item: Ident
         }
     }
     
-    func griditemWidthThatFits(count: Int,
-                               size: CGSize,
-                               atAspectRatio aspectRatio: CGFloat
-    ) -> CGFloat {
-        let count = CGFloat(count)
-        var columnCount = 1.0
-        
-        repeat {
-            
-            let width = size.width / columnCount
-            let height = width / aspectRatio
-            
-            let rowCount = (count / columnCount).rounded(.up)
-            if rowCount * height < size.height {
-                return (size.width / columnCount).rounded(.down)
+//    func griditemWidthThatFits(count: Int,
+//                               size: CGSize,
+//                               atAspectRatio aspectRatio: CGFloat
+//    ) -> CGFloat {
+//        let count = CGFloat(count)
+//        var columnCount = 1.0
+//        
+//        repeat {
+//            
+//            let width = size.width / columnCount
+//            let height = width / aspectRatio
+//            
+//            let rowCount = (count / columnCount).rounded(.up)
+//            if rowCount * height < size.height {
+//                return (size.width / columnCount).rounded(.down)
+//            }
+//            columnCount += 1
+//            
+//        } while columnCount < count
+//        return min(size.width / count, size.height * aspectRatio).rounded(.down)
+//        //return 85
+//    }
+    
+    func griditemWidthThatFits(count: Int, size: CGSize, atAspectRatio aspectRatio: CGFloat) -> CGFloat {
+        // Calculate number of columns and rows based on the screen size and aspect ratio
+        var bestLayout: (rowCount: Int, columnCount: Int) = (1, count)
+        var minDiff: CGFloat = .greatestFiniteMagnitude
+
+        for columns in 1...count {
+            let rows = (count + (columns - 1)) / columns
+            let itemWidth = size.width / CGFloat(columns)
+            let itemHeight = itemWidth / aspectRatio
+            let totalHeight = CGFloat(rows) * itemHeight
+            let diff = abs(size.height - totalHeight)
+
+            if diff < minDiff {
+                minDiff = diff
+                bestLayout = (rows, columns)
             }
-            columnCount += 1
-            
-        } while columnCount < count
-        return min(size.width / count, size.height * aspectRatio).rounded(.down)
-        //return 85
+        }
+
+        return size.width / CGFloat(bestLayout.columnCount)
     }
+
 }
 
 //#Preview {
