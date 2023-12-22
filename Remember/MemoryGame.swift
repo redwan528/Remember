@@ -51,10 +51,10 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
                     // Match found
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
-                    score += 2
+                    score += 6 + cards[chosenIndex].bonus + cards[potentialMatchIndex].bonus
                 } else {
                     // Mismatch
-                    // if cards[chosenIndex].hasBeenSeen { score -= 1 } dead code line
+                     if cards[chosenIndex].hasBeenSeen { score -= 1 }
                     
                     if cards[potentialMatchIndex].hasBeenSeen { score -= 1 }
                 }
@@ -77,8 +77,23 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         
         
-        var isFaceUp = false
-        var isMatched = false
+        var isFaceUp = false {
+            didSet {
+                if isFaceUp {startUsingBonusTime()}
+                else{stopUsingBonusTime()}
+                
+                if oldValue && !isFaceUp {hasBeenSeen = true}
+            }
+        }
+        
+        var isMatched = false {
+            didSet {
+                if isMatched {
+                    stopUsingBonusTime()
+                }
+            }
+            
+        }
         let content: CardContent //let cuz content stays same on card no matter what
         var hasBeenSeen = false
         
@@ -87,6 +102,52 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
         var debugDescription: String {
             return "\(id): \(content) \(isFaceUp ? "up" : "down")\(isMatched ? "matched" : "")"
         }
+        
+        // MARK: - Bonus Time
+        
+        //call when card transitions to face up state
+        private mutating func startUsingBonusTime(){
+            if isFaceUp, //&&
+                !isMatched, //&&
+                bonusPercentRemaining > 0,
+                lastFaceUpDate == nil {
+                    lastFaceUpDate = Date()
+            }
+        }
+        
+        //call when card goes back face down or gets matched
+        private mutating func stopUsingBonusTime(){
+            pastFaceUpTime = faceUpTime
+            lastFaceUpDate = nil
+        }
+        
+        //bonus points one point for every second bonusTimeLimit that was not used
+        // this gets smaller and smaller longer card remains face up without matching
+        var bonus: Int {
+            Int(bonusTimeLimit * bonusPercentRemaining)
+        }
+        
+        var bonusPercentRemaining: Double {
+            bonusTimeLimit > 0 ? max(0, bonusTimeLimit - faceUpTime)/bonusTimeLimit : 0
+        }
+        
+        var faceUpTime: TimeInterval {
+            if let lastFaceUpDate {
+                return pastFaceUpTime + Date().timeIntervalSince(lastFaceUpDate)
+            } else {return pastFaceUpTime}
+        }
+        
+        
+        var pastFaceUpTime: TimeInterval = 0
+        
+        //bonus points till time reaches 0
+        var bonusTimeLimit: TimeInterval = 6
+        
+            //last time card was flipped up
+        var lastFaceUpDate: Date?
+        
+        
+       
     }
     
 }

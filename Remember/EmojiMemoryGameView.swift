@@ -12,6 +12,7 @@ enum CardTheme: CaseIterable {
 }
 
 struct EmojiMemoryGameView: View {
+    typealias Card = MemoryGame<String>.Card
     @ObservedObject var viewModel: EmojiMemoryGame
     private let cardAspectRatio: CGFloat = 2/3
     private let spacing: CGFloat = 4
@@ -19,50 +20,78 @@ struct EmojiMemoryGameView: View {
 
     var body: some View {
         VStack {
-            HStack{
-                Text(viewModel.themeName)
-                    .font(.system(size: themeTitleSize, weight: .bold, design: .rounded)) // Adjust size, weight, and design
-                    .italic()
-                    .foregroundColor(viewModel.themeColor)
-                Spacer()
-                Text("Score: \(viewModel.score)").font(.headline)
-            }
-
+            HStack{ title; Spacer(); score }
                 themeCards
-      
-            .animation(.default, value: viewModel.cards)
-
-            Button("New Game") {
-                viewModel.newGame()
-            }.foregroundColor(.accentColor)
+            newGameButton
             Spacer()
         }
         .padding()
+    }
+    
+    private var score: some View {
+        Text("Score: \(viewModel.score)")
+            .font(.headline)
+            .animation(nil)
+
+    }
+    private var newGameButton: some View {
+        Button("New Game") {
+            viewModel.newGame()
+        }.foregroundColor(.accentColor)
+    }
+    
+    private var title: some View {
+        Text(viewModel.themeName)
+            .font(.system(size: themeTitleSize, weight: .bold, design: .rounded)) // Adjust size, weight, and design
+            .italic()
+            .foregroundColor(viewModel.themeColor)
     }
 
     
     private var themeCards: some View {
         AspectVGrid(viewModel.cards, aspectRatio: cardAspectRatio) { card in
             CardView(card)
-                        .padding(spacing)
-                        .onTapGesture {
-                          //  withAnimation(.easeInOut(duration: 3)){
-                                viewModel.choose(card)
-
-                          //  }
-                            
+                .padding(spacing)
+                .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
+                .zIndex(scoreChange(causedBy: card) != 0 ? 1 : 0) // prevents score number from going behind card
+                .onTapGesture {
+                       flip(card)
                 }
                        .foregroundColor(viewModel.themeColor)
             }
+        
+        //.animation(.default, value: viewModel.cards)
+        
+       
             
         }
+    
+    
+    private func flip(_ card: Card) {
+        withAnimation {
         
-        
+                    let scoreBeforeChoosing = viewModel.score
+                    viewModel.choose(card)
+                    let scoreChange = viewModel.score - scoreBeforeChoosing
+                lastScoreChange = (scoreChange, causedByCardId: card.id)
+
+                
+        }
+    }
+    
+    //type tuple
+    @State private var lastScoreChange = (0, causedByCardId: "")
+    
+    
+    private func scoreChange(causedBy card: Card) -> Int {
+        let (amount, id) = lastScoreChange
+        return card.id == id ? amount : 0
+    }
+    
     }
 
-// Preview Provider
-struct EmojiMemoryGameView_Previews: PreviewProvider {
-    static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
-    }
+
+#Preview {
+    EmojiMemoryGameView(viewModel: EmojiMemoryGame())
 }
+   
