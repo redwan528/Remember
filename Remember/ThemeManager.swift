@@ -14,11 +14,13 @@ class ThemeManager {
     
     var dessertsEmojis =  ["🍰", "🧁", "🍩", "🍪", "🍫", "🍬", "🍭", "🍮", "🍨", "🍧", "🍦", "🥧", "🍡", "🍢", "🍠"]
     var halloweenEmojis = ["😈", "👻", "💀", "🎃", "👿", "☠️", "🧙", "🍫", "🍬", "🙀", "🕸", "🕷", "🍭", "🦇", "🪦", "🧛", "🧟‍♂️", "🧟‍♀️"] 
-        var faceEmojis = ["😂", "😘", "🥰", "😇", "😎", "🤯", "🤬", "🤪", "🙄", "🥵", "😏", "😒", "🤩", "😜", "😡", "😱"]
+        var faceEmojis = ["😂", "😘", "🥰", "😇", "😎", "🤯", "🤬", "🤪", "🙄", "🥵", "😏", "😒", "🤩", "😜", "😡", "😱", "🥺", "😉"]
     var mealEmojis = ["🥞", "🧇", "🍳", "🥓", "🥐", "🍔", "🍟", "🌭", "🍕", "🥪", "🍱", "🍲", "🥘", "🍝", "🥗"]
     var animalEmojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🐵"]
     var sportsEmojis = ["⚽", "🏀", "🏈", "⚾", "🎾", "🏐", "🏉", "🏏", "🏑", "🏒", "🏓", "🏸", "🥊", "🛹", "🏹"]
     var travelEmojis = ["✈️", "🚂", "🚗", "🚢", "🛸", "🚀", "🚁", "🚲", "🏍", "🚜", "⛵", "🚇", "🛶", "🛴", "🚡"]
+    var christmasEmojis = ["🎄", "🎅", "🦌", "🎁", "⛄", "❄️", "🔔", "🕯️", "🧦", "🍪", "🥛", "🌟", "☃️", "🕊️", "🍬", "🍭", "👼", "🛷"]
+
 
     private init() {
         // Initialize with default themes
@@ -30,7 +32,8 @@ class ThemeManager {
                      createTheme(name: "Meals", emojis: mealEmojis, color: "Red"),
                      createTheme(name: "Animals", emojis: animalEmojis, color: "Green"),
                      createTheme(name: "Sports", emojis: sportsEmojis, color: "Blue"),
-                     createTheme(name: "Travel", emojis: travelEmojis, color: "Indigo")
+                     createTheme(name: "Travel", emojis: travelEmojis, color: "Indigo"),
+                     createTheme(name: "Christmas", emojis: christmasEmojis, color: "Green")
             
         ]
     }

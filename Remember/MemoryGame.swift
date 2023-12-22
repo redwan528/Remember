@@ -56,7 +56,7 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
                     // Mismatch
                      if cards[chosenIndex].hasBeenSeen { score -= 1 }
                     
-                    if cards[potentialMatchIndex].hasBeenSeen { score -= 1 }
+                    //if cards[potentialMatchIndex].hasBeenSeen { score = 0 + score }
                 }
                 cards[chosenIndex].isFaceUp = true
             } else {
