@@ -48,6 +48,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C9385B62B374F8B001FC96E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5CB1E5462AFE29AF0062A746 /* MemoryGame.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5C9385B72B374FEE001FC96E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5C9385AE2B335729001FC96E /* Pie.swift */,
+				5C9385B22B34B2EC001FC96E /* FlyingNumber.swift */,
+				5C9385AC2B30F432001FC96E /* CardView.swift */,
+				5C9E607C2AEE10CB0038D0C9 /* EmojiMemoryGameView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5C9385B82B37503B001FC96E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				5C9DA3902AFE394A006DC066 /* EmojiMemoryGame.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5C9385B92B37521E001FC96E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5C61A5C02B2E09BE00587001 /* ThemeManager.swift */,
+				5C61A5C22B2FFB2B00587001 /* AspectVGrid.swift */,
+				5C9385B02B3363E2001FC96E /* Cardify.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		5C9E606E2AEE10CB0038D0C9 = {
 			isa = PBXGroup;
 			children = (
@@ -68,15 +105,10 @@
 			isa = PBXGroup;
 			children = (
 				5C9E607A2AEE10CB0038D0C9 /* RememberApp.swift */,
-				5C9E607C2AEE10CB0038D0C9 /* EmojiMemoryGameView.swift */,
-				5C9385B22B34B2EC001FC96E /* FlyingNumber.swift */,
-				5C9385AC2B30F432001FC96E /* CardView.swift */,
-				5C9385B02B3363E2001FC96E /* Cardify.swift */,
-				5C9385AE2B335729001FC96E /* Pie.swift */,
-				5C61A5C22B2FFB2B00587001 /* AspectVGrid.swift */,
-				5CB1E5462AFE29AF0062A746 /* MemoryGame.swift */,
-				5C9DA3902AFE394A006DC066 /* EmojiMemoryGame.swift */,
-				5C61A5C02B2E09BE00587001 /* ThemeManager.swift */,
+				5C9385B62B374F8B001FC96E /* Model */,
+				5C9385B72B374FEE001FC96E /* View */,
+				5C9385B82B37503B001FC96E /* ViewModel */,
+				5C9385B92B37521E001FC96E /* Utilities */,
 				5C9E607E2AEE10D00038D0C9 /* Assets.xcassets */,
 				5C9E60802AEE10D00038D0C9 /* Preview Content */,
 			);
