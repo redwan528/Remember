@@ -23,7 +23,11 @@ struct EmojiMemoryGameView: View {
     private let dealAnimation: Animation = .easeInOut(duration: 1)
     private let deckWidth: CGFloat = 50
 
+   
+    
     var body: some View {
+        
+        
         ZStack {
             VStack {
                 HStack{ title; Spacer(); score }
@@ -45,8 +49,31 @@ struct EmojiMemoryGameView: View {
                 dealCardsText
 
                      }
+            
+            if viewModel.isGameCompleted {
+                Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
+                VStack{
+                    Text("You Win!")
+                        .font(.largeTitle)
+                        //.foregroundStyle(.secondary)
+                    Text("Score: \(viewModel.score)")
+                        .font(.title)
+                        //.foregroundStyle(.secondary)
+                    Button("New Game") {
+                        dealt = Set<Card.ID>()
+                        viewModel.newGame()
+                    }.padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+            }
                  }
              }
+    
+//    private var gameCompletedView: some View {
+//
+//    }
 
     private var dealCardsText: some View {
         Text("Tap below to deal cards")
@@ -68,7 +95,7 @@ struct EmojiMemoryGameView: View {
     @State private var animatedState = false
 
     
-    
+   
     
     
     private var score: some View {
@@ -77,12 +104,17 @@ struct EmojiMemoryGameView: View {
            // .animation(nil)
 
     }
+    
+    @State private var isNewGameButtonPressed = false
     private var newGameButton: some View {
         Button("New Game") {
+            isNewGameButtonPressed = true
             withAnimation {
                 dealt = [] // clear dealt set
                 viewModel.newGame()
             }
+            isNewGameButtonPressed = false
+            cardsFlippedAfterDeckTap = false
             
         }.foregroundColor(.accentColor)
     }
@@ -95,16 +127,23 @@ struct EmojiMemoryGameView: View {
     }
 
     
+    @State private var resetRotationEffect = false
+    
     private var themeCards: some View {
         AspectVGrid(viewModel.cards, aspectRatio: cardAspectRatio) { card in
            
-            if isDealt(card) {
+            if isDealt(card)/*, !isNewGameButtonPressed*/ {
                 CardView(card)
                     .matchedGeometryEffect(id: card.id, in: dealingNamespace)
                     .transition(.asymmetric(insertion: .identity, removal: .identity))
                     .padding(spacing)
-                    .overlay(FlyingNumber(number: scoreChange(causedBy: card)))
+               
+                    .overlay(
+                      cardsFlippedAfterDeckTap ? FlyingNumber(number: scoreChange(causedBy: card)) : nil
+                        
+                    )
                     .zIndex(scoreChange(causedBy: card) != 0 ? 1 : 0) // prevents score number from going behind card
+                
                     .onTapGesture {
                            flip(card)
                     }.foregroundColor(viewModel.themeColor)
@@ -126,6 +165,7 @@ struct EmojiMemoryGameView: View {
     }
     
     @Namespace private var dealingNamespace
+    @State private var isDeckTapped = false
     private var deck: some View {
         ZStack {
             ForEach(undealtCards) {card in
@@ -138,7 +178,10 @@ struct EmojiMemoryGameView: View {
             }
         }.frame(width: deckWidth, height: 70)
             .onTapGesture{
+                isDeckTapped = true
                 deal()
+                isDeckTapped = false
+                cardsFlippedAfterDeckTap = false
             }
     }
     
@@ -161,7 +204,7 @@ struct EmojiMemoryGameView: View {
     }
     
    
-    
+    @State private var cardsFlippedAfterDeckTap = false
     
     
     private func flip(_ card: Card) {
@@ -171,6 +214,7 @@ struct EmojiMemoryGameView: View {
                     viewModel.choose(card)
                     let scoreChange = viewModel.score - scoreBeforeChoosing
                 lastScoreChange = (scoreChange, causedByCardId: card.id)
+            cardsFlippedAfterDeckTap = true
 
                 
         }

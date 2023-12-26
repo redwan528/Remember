@@ -42,8 +42,8 @@ struct CardView: View {
             .multilineTextAlignment(.center)
             .aspectRatio(1, contentMode: .fit)
             .rotationEffect(.degrees(card.isMatched ? 360 : 0))
-            .animation(.spin(duration: 1),
-                value: card.isMatched)
+            .animation(.spin(duration: /*1*/ card.animateRotation ? 1 : 0),
+                       value: card.isMatched && card.animateRotation)
            
     }
     

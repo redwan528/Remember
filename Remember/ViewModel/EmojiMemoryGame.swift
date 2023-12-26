@@ -11,11 +11,16 @@ class EmojiMemoryGame: ObservableObject {
     typealias Card = MemoryGame<String>.Card
     
     @Published private var model: MemoryGame<String>
+    //@Published var resetAnimations = false
 
     private(set) var currentTheme: Theme
     
     var themeName: String {
         currentTheme.name
+    }
+    
+    var isGameCompleted: Bool {
+        cards.allSatisfy {$0.isMatched}
     }
     
     var score: Int {
@@ -69,9 +74,12 @@ class EmojiMemoryGame: ObservableObject {
                 newTheme = ThemeManager.shared.getRandomTheme()
             } while newTheme.name == currentTheme.name
 
+        //resetAnimations = true
             currentTheme = newTheme
+        
             model = EmojiMemoryGame.createMemoryGame(theme: newTheme)
-                    
+            model.resetCardAnimations()
+      
         
 
       }

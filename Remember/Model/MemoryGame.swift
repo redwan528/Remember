@@ -51,6 +51,8 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
                     // Match found
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
+                    cards[chosenIndex].animateRotation = true
+                    cards[potentialMatchIndex].animateRotation = true
                     score += 6 + cards[chosenIndex].bonus + cards[potentialMatchIndex].bonus
                 } else {
                     // Mismatch
@@ -73,8 +75,15 @@ struct MemoryGame <CardContent> where CardContent: Equatable /*dont care CardCon
         print(cards)
     }
     
+    mutating func resetCardAnimations(){
+        for index in cards.indices {
+            cards[index].animateRotation = false
+        }
+    }
+    
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
+        var animateRotation = false
         
         
         var isFaceUp = false {
