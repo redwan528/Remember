@@ -1,7 +1,7 @@
-# Memorize Game iOS App
+# Remember Card Game iOS App
 
 ## Overview
-"Memorize" is a dynamic and engaging iOS card matching game developed as part of my learning journey in iOS development. This project demonstrates proficiency in Swift, SwiftUI, and applying the Model-View-ViewModel (MVVM) architectural pattern. The game features multiple themes, intuitive UI, and a scoring system, offering a fun and interactive way to test memory skills.
+"Remember" is a dynamic and engaging iOS card matching game developed as part of my learning journey in iOS development. This project demonstrates proficiency in Swift, SwiftUI, and applying the Model-View-ViewModel (MVVM) architectural pattern. The game features multiple themes, intuitive UI, and a scoring system, offering a fun and interactive way to test memory skills.
 
 ## Features
 - **Dynamic Themes**: Supports over six distinct themes, each with a unique set of emojis, card count, and color scheme.
@@ -31,6 +31,9 @@ Run the app in the Xcode simulator or on a physical device.
 - Animations of cards flipping over and drawing from deck.
 - Difficulty levels with timer.
 - Integration with Game Center for global leaderboards.
+
+## Privacy
+Remember Card Game does not collect, share, or store any data.
 
 ## About the Developer
 **Redwan Khan**  
