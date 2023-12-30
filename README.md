@@ -24,8 +24,8 @@ cd memorize-game-ios
 open MemorizeGame.xcodeproj
 Run the app in the Xcode simulator or on a physical device.
 
-## Screenshots
-![Gameplay Screenshot](http://g.recordit.co/bbmD1tOl7K.gif)
+## Gameplay
+![RememberGameplay (1)](https://github.com/redwan528/Remember/assets/58414163/c6d7ea94-97c5-41f1-8f2b-c15efdd5266a)
 
 ## Future Enhancements
 - Animations of cards flipping over and drawing from deck.
